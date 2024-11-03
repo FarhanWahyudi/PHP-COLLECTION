@@ -8,13 +8,9 @@ use Tests\TestCase;
 
 class CollectionTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
+    public function testCreateCollection()
     {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
+        $collection = collect([1, 2, 3]);
+        $this->assertEqualsCanonicalizing([1, 2, 3], $collection->all());
     }
 }
