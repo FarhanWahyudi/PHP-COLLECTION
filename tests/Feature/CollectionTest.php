@@ -216,4 +216,53 @@ class CollectionTest extends TestCase
             return $value == 'farhan';
         }));
     }
+
+    public function testGrouping()
+    {
+        $collection = collect([
+            [
+                'name' => 'farhan',
+                'department' => 'it'
+            ],
+            [
+                'name' => 'wahyu',
+                'department' => 'it'
+            ],
+            [
+                'name' => 'akmal',
+                'department' => 'hr'
+            ]
+        ]);
+
+        $result = $collection->groupBy('department');
+
+        $this->assertEquals($result->all(), [
+            'it' => collect([
+                [
+                    'name' => 'farhan',
+                    'department' => 'it'
+                ],
+                [
+                    'name' => 'wahyu',
+                    'department' => 'it'
+                ]
+            ]),
+            'hr' => collect([
+                [
+                    'name' => 'akmal',
+                    'department' => 'hr'
+                ]
+            ])
+        ]);
+    }
+
+    public function testSlicing()
+    {
+        $collection = collect([1,2,3,4,5,6,7,8,9]);
+        $result1 = $collection->slice(3)->values();
+        $result2 = $collection->slice(3, 2)->values();
+
+        $this->assertEqualsCanonicalizing($result1->all(), [4,5,6,7,8,9]);
+        $this->assertEqualsCanonicalizing($result2->all(), [4,5]);
+    }
 }
