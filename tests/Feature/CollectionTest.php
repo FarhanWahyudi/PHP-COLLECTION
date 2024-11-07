@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Data\Person;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Symfony\Component\VarDumper\VarDumper;
 use Tests\TestCase;
 
 class CollectionTest extends TestCase
@@ -157,4 +158,34 @@ class CollectionTest extends TestCase
         $this->assertEquals($collection->join('-'), 'farhan-wahyu-yudi');
         $this->assertEquals($collection->join('-', '_'), 'farhan-wahyu_yudi');
     }
+
+    public function testFilter()
+    {
+        $collection = collect([
+            'farhan' => 100,
+            'akmal' => 90,
+            'wahyu' => 67
+        ]);
+
+        $result = $collection->filter(function ($item, $key) {
+            return $item > 80;
+        });
+        
+        $this->assertEquals($result->all(), [
+            'farhan' => 100,
+            'akmal' => 90
+        ]);
+    }
+
+    public function testFilterIndex()
+    {
+        $collection = collect([1,2,3,4,5,6,7,8,9]);
+        $result = $collection->filter(function ($value, $key) {
+            return $value % 2 == 0;
+        })->values();
+
+        $this->assertEqualsCanonicalizing([2,4,6,8], $result->all());
+    }
+
+    
 }
