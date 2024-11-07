@@ -187,5 +187,33 @@ class CollectionTest extends TestCase
         $this->assertEqualsCanonicalizing([2,4,6,8], $result->all());
     }
 
-    
+    public function testPartition()
+    {
+        $collection = collect([
+            'farhan' => 100,
+            'akmal' => 90,
+            'wahyu' => 67
+        ]);
+
+        [$result1, $result2] = $collection->partition(function ($item, $key) {
+            return $item > 80;
+        });
+        
+        $this->assertEquals($result1->all(), [
+            'farhan' => 100,
+            'akmal' => 90
+        ]);
+        $this->assertEquals($result2->all(), [
+            'wahyu' => 67
+        ]);
+    }
+
+    public function testTesting()
+    {
+        $collection = collect(['farhan', 'yudi']);
+        $this->assertTrue($collection->contains('farhan'));
+        $this->assertTrue($collection->contains(function ($value, $key) {
+            return $value == 'farhan';
+        }));
+    }
 }
