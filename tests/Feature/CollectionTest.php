@@ -349,4 +349,14 @@ class CollectionTest extends TestCase
             return $value == 8;
         }));
     }
+
+    public function testOrdering()
+    {
+        $collection = collect([1,4,2,3,7,6,5,8,9]);
+        $result = $collection->sort()->values();
+        $this->assertEquals($result->all(), [1,2,3,4,5,6,7,8,9]);
+
+        $result = $collection->sortDesc()->values();
+        $this->assertEquals($result->all(), [9,8,7,6,5,4,3,2,1]);
+    }
 }
